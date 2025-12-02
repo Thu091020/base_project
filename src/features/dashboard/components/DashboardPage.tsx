@@ -2,17 +2,17 @@ import { Typography } from 'antd'
 
 const { Title, Paragraph } = Typography
 
-export const DashboardPage = () => {
+ const DashboardPage = () => {
   return (
-    <div className="min-h-full bg-slate-50">
-      <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-8">
-        <Title level={3} className="!mb-0">
+    <div className="min-h-full bg-bg-sub">
+      <div className="mx-auto flex flex-col gap-4 px-4 py-8 rounded-lg bg-bg-card">
+        <Title level={3} className="!mb-0 text-text-main">
           Dashboard
         </Title>
-        <Paragraph>Welcome to the base dashboard page.</Paragraph>
+        <Paragraph className="text-text-sub">Welcome to the base dashboard page.</Paragraph>
       </div>
     </div>
   )
 }
 
-
+export default DashboardPage

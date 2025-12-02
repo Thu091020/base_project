@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "generate:colors": "node ./scripts/generate-colors.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

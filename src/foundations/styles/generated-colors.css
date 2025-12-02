@@ -1,0 +1,59 @@
+/* This file is generated. DO NOT EDIT.
+ * Run "npm run generate:colors" or "yarn generate:colors" after changing colors.json.
+ */
+
+:root {
+  --color-bg-main: #FFFFFF;
+  --color-bg-sub: #FAFAFA;
+  --color-bg-soft: #F4F4F4;
+  --color-bg-header: #F7F7F7;
+  --color-bg-navbar: #FCFCFC;
+  --color-bg-card: #FCFCFC;
+  --color-bg-popup: #F9FAFA;
+  --color-bg-dialog: #FFFFFF;
+  --color-bg-dialog-2: #F9F9F9;
+  --color-bg-input: #FCFCFC;
+  --color-bg-input-2: #F2F2F2;
+  --color-bg-table-1: #FCFCFC;
+  --color-bg-table-2: #F4F4F6;
+  --color-bg-table-header: #E1E3EB;
+  --color-bg-table-sum: #EFF0F0;
+  --color-divider: #EBEBF0;
+  --color-border: #DDDDE3;
+  --color-text-main: #111827;
+  --color-text-sub: #4B5563;
+  --color-text-soft: #6B7280;
+  --color-text-placeholder: #9CA3AF;
+  --color-text-disabled: #D1D5DB;
+  --color-text-link: #2563EB;
+  --color-text-error: #DC2626;
+  --color-text-success: #059669;
+}
+
+.dark {
+  --color-bg-main: #0F0F0F;
+  --color-bg-sub: #16181A;
+  --color-bg-soft: #27272A;
+  --color-bg-header: #23252C;
+  --color-bg-navbar: #0F0F0F;
+  --color-bg-card: #141417;
+  --color-bg-popup: #1E2022;
+  --color-bg-dialog: #171719;
+  --color-bg-dialog-2: #2A2A2B;
+  --color-bg-input: #101010;
+  --color-bg-input-2: #1F1F1F;
+  --color-bg-table-1: #030303;
+  --color-bg-table-2: #141414;
+  --color-bg-table-header: #23252C;
+  --color-bg-table-sum: #31343D;
+  --color-divider: #373C49;
+  --color-border: #373C49;
+  --color-text-main: #F9FAFB;
+  --color-text-sub: #D1D5DB;
+  --color-text-soft: #9CA3AF;
+  --color-text-placeholder: #6B7280;
+  --color-text-disabled: #4B5563;
+  --color-text-link: #3B82F6;
+  --color-text-error: #F87171;
+  --color-text-success: #34D399;
+}

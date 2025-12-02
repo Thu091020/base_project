@@ -1,13 +1,12 @@
 import type { Config } from 'tailwindcss'
+import generatedColors from './src/foundations/styles/tailwind-colors.mjs'
 
 const config: Config = {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#1677ff',
-        },
+        ...generatedColors,
       },
       borderRadius: {
         lg: '8px',

@@ -1,73 +1,78 @@
-import React from 'react'
-import { createBrowserRouter, Navigate, Outlet, RouterProvider, type RouteObject } from 'react-router-dom'
+import type { ReactNode } from 'react'
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import App from '../App'
 import MainLayout from '../layouts/MainLayout'
-import LoginLayout from '../layouts/LoginLayout'
-import ExtensionLayout from '../layouts/ExtensionLayout'
-import AppShell from '../AppShell'
-import { ROUTE } from './routes.config'
-import { ProtectedRoute } from './guards'
-import type { LayoutKey } from './types'
+import { isAuthenticated, setAuth } from '../store/auth.store'
+import { buildAuthUrl } from '../config/auth.config'
+import CallbackPage from '../pages/CallbackPage'
+import DashboardPage from '../features/dashboard/components/DashboardPage'
 
-const layoutMap: Record<LayoutKey, React.ComponentType<React.PropsWithChildren>> = {
-  main: MainLayout,
-  login: LoginLayout,
-  extension: ExtensionLayout,
-}
+const RequireAuth = ({ children }: { children: ReactNode }) => {
+  const location = useLocation()
 
-const buildRouter = () => {
-  const layoutRoutes: Record<string, RouteObject> = {}
+  const token = typeof window !== 'undefined' ? window.localStorage.getItem('token') : null
 
-  Object.values(ROUTE).forEach((route) => {
-    const { layout, path, element, options } = route
-
-    if (!layoutRoutes[layout]) {
-      const LayoutComponent = layoutMap[layout]
-      layoutRoutes[layout] = {
-        element: (
-          <LayoutComponent>
-            <React.Suspense fallback={null}>
-              <Outlet />
-            </React.Suspense>
-          </LayoutComponent>
-        ),
-        children: [],
-      }
-    }
-
-    const roles = (options as typeof options & { roles?: import('../store/auth.store').Role[] }).roles
-
-    const childElement =
-      options.requireAuth || roles ? (
-        <ProtectedRoute roles={roles} isPrivate={options.requireAuth}>
-          {element as React.ReactElement}
-        </ProtectedRoute>
-      ) : (
-        element
-      )
-
-    layoutRoutes[layout].children!.push({
-      path: path.replace(/^\//, ''),
-      element: childElement,
-    })
-
-    layoutRoutes[layout].children!.push({
-      path: '*',
-      element: <Navigate to="/404" replace />,
-    })
-  })
-
-  const routes: RouteObject = {
-    path: '/',
-    element: <AppShell />,
-    children: Object.values(layoutRoutes),
+  if (!token && !location.pathname.startsWith('/callback')) {
+    // No token in storage: redirect to external login (mirrors `MainApp` behavior in po-react)
+    const authUrl = buildAuthUrl()
+    window.location.href = authUrl.toString()
+    return null
   }
 
-  return createBrowserRouter([routes])
-}
+  if (token && !isAuthenticated()) {
+    // Ensure in-memory auth state is hydrated from localStorage
+    setAuth({ user: null, token })
+  }
 
-const router = buildRouter()
+  if (!token) {
+    return null
+  }
+
+  return <>{children}</>
+}
 
 export const AppRouter = () => {
-  return <RouterProvider router={router} />
+  return (
+    <BrowserRouter>
+      <Routes>
+  
+        <Route path="/callback" element={<CallbackPage />} />
+
+        <Route path="/" element={<App />}>
+          <Route
+            index
+            element={
+              <RequireAuth>
+                <Navigate to="/dashboard" replace />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="dashboard"
+            element={
+              <RequireAuth>
+                <MainLayout>
+                  <DashboardPage />
+                </MainLayout>
+              </RequireAuth>
+            }
+          />
+        </Route>
+
+        <Route
+          path="*"
+          element={
+            <RequireAuth>
+              <Navigate to="/dashboard" replace />
+            </RequireAuth>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  )
 }
+
+export default AppRouter
+
 
